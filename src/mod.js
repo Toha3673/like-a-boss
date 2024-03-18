@@ -37,7 +37,7 @@ class like_a_boss {
     }
     preAkiLoad(container) {
         const staticroutermodservice = container.resolve("StaticRouterModService");
-        staticroutermodservice.registerStaticRouter("LikeABoss_On_Game_Start", [{
+        /*staticroutermodservice.registerStaticRouter("LikeABoss_On_Game_Start", [{
             url: "/client/game/start",
             action: (url, info, sessionID, output) => {
                 if (this.CFG.reroll_on_launch)
@@ -47,7 +47,7 @@ class like_a_boss {
                 return output;
             }
         }],
-        "aki");
+        "aki");*/
         staticroutermodservice.registerStaticRouter("LikeABoss_On_Scav_Regenerate", [{
             url: "/client/game/profile/savage/regenerate",
             action: (url, info, sessionID, output) => {
