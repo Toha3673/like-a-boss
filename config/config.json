@@ -1,4 +1,6 @@
 {
+    "reroll_on_game_start": true,
+
     "boss_chances":[
         1,
         5,

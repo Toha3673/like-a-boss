@@ -9,6 +9,7 @@ class like_a_boss {
     RandomUtil;
     BotHelper;
     BotGenerator;
+    PlayerScavGenerator;
     SRMService;
     SaveServer;
     HashGen;
@@ -18,8 +19,9 @@ class like_a_boss {
         this.DataBase = container.resolve("DatabaseServer");
         this.JsonUtil = container.resolve("JsonUtil");
         this.RandomUtil = container.resolve("RandomUtil");
-        this.BotHelper = container.resolve("BotHelper")
-        this.BotGenerator = container.resolve("BotGenerator")
+        this.BotHelper = container.resolve("BotHelper");
+        this.BotGenerator = container.resolve("BotGenerator");
+        this.PlayerScavGenerator = container.resolve("PlayerScavGenerator");
         this.SRMService = container.resolve("StaticRouterModService");
         this.SaveServer = container.resolve("SaveServer");
         this.HashGen = container.resolve("HashUtil");
@@ -37,17 +39,17 @@ class like_a_boss {
     }
     preAkiLoad(container) {
         const staticroutermodservice = container.resolve("StaticRouterModService");
-        /*staticroutermodservice.registerStaticRouter("LikeABoss_On_Game_Start", [{
+        staticroutermodservice.registerStaticRouter("LikeABoss_On_Game_Start", [{
             url: "/client/game/start",
             action: (url, info, sessionID, output) => {
-                if (this.CFG.reroll_on_launch)
+                if (this.CFG.reroll_on_game_start)
                 {
                     this.regenerateScavProfile(sessionID);
                 }
                 return output;
             }
         }],
-        "aki");*/
+        "aki");
         staticroutermodservice.registerStaticRouter("LikeABoss_On_Scav_Regenerate", [{
             url: "/client/game/profile/savage/regenerate",
             action: (url, info, sessionID, output) => {
@@ -67,7 +69,11 @@ class like_a_boss {
         if (chance >= this.RandomUtil.getInt(1, 100)) {
             this.Logger.log("[like-a-boss] Creating boss profile..", LTColor.LogTextColor.CYAN);
             const randomBotType = bosses[this.RandomUtil.getInt(0, bosses.length - 1)].toString().toLowerCase();
-            this.generateBotProfileObject(profile.characters, randomBotType, sessionID);
+            this.generateBossProfile(profile.characters, randomBotType, sessionID);
+        } else {
+            this.Logger.log("[like-a-boss] Creating scav profile..", LTColor.LogTextColor.CYAN);
+            //this.generateScavProfile(profile.characters, "assault", sessionID);
+            this.SaveServer.getProfile(sessionID).characters.scav = this.PlayerScavGenerator.generate(sessionID);
         }
     }
 
@@ -128,22 +134,52 @@ class like_a_boss {
         }
     }
 
-    generateBotProfileObject(characters, bosstype, session)
+    generateScavProfile(characters, scavtype, session)
     {
-        const existingPMCData = characters.pmc
-        const existingScavData = characters.scav
-        const bossTemplate = this.JsonUtil.clone(this.BotHelper.getBotTemplate(bosstype));
-        const scavData = this.BotGenerator.generatePlayerScav(session, bosstype, "easy", bossTemplate);
-        scavData._id = existingPMCData.savage;
-        scavData.aid = session;
-        scavData.TradersInfo = this.JsonUtil.clone(existingPMCData.TradersInfo);
-        scavData.Skills = this.JsonUtil.clone(existingScavData.Skills);
-        scavData.Stats = this.JsonUtil.clone(existingScavData.Stats);
-        scavData.Info.Level = existingPMCData.Info.Level;
-        scavData.Info.Experience = existingScavData.Info.Experience;
-        scavData.Info.Settings = {};
+        const existingPMCData = this.JsonUtil.clone(characters.pmc);
+        const existingScavData = this.JsonUtil.clone(characters.scav);
+        const scavTemplate = this.JsonUtil.clone(this.BotHelper.getBotTemplate(scavtype));
+        const generatedScavData = this.BotGenerator.generatePlayerScav(session, scavtype, "easy", scavTemplate);
 
-        const items = scavData.Inventory.items
+        existingScavData.Info.Nickname = generatedScavData.Info.Nickname;
+        existingScavData.Info.Side = generatedScavData.Info.Side;
+        existingScavData.Info.Voice = generatedScavData.Info.Voice;
+
+        existingScavData.Customization = generatedScavData.Customization;
+
+        existingScavData.Health = generatedScavData.Health;
+
+        existingScavData.Inventory = generatedScavData.Inventory;
+
+        existingScavData.Skills = generatedScavData.Skills;
+
+        existingScavData.Stats = generatedScavData.Stats;
+
+        characters.scav = existingScavData;
+    }
+
+    generateBossProfile(characters, bosstype, session)
+    {
+        const existingPMCData = this.JsonUtil.clone(characters.pmc);
+        const existingScavData = this.JsonUtil.clone(characters.scav);
+        const bossTemplate = this.JsonUtil.clone(this.BotHelper.getBotTemplate(bosstype));
+        const generatedBossData = this.BotGenerator.generatePlayerScav(session, bosstype, "easy", bossTemplate);
+
+        existingScavData.Info.Nickname = generatedBossData.Info.Nickname;
+        existingScavData.Info.Side = generatedBossData.Info.Side;
+        existingScavData.Info.Voice = generatedBossData.Info.Voice;
+
+        existingScavData.Customization = generatedBossData.Customization;
+
+        existingScavData.Health = generatedBossData.Health;
+
+        existingScavData.Inventory = generatedBossData.Inventory;
+
+        existingScavData.Skills = generatedBossData.Skills;
+
+        existingScavData.Stats = generatedBossData.Stats;
+
+        const items = existingScavData.Inventory.items
 
         this.replaceItemBySlot(items, "likeaboss_scavpouch", "SecuredContainer");
 
@@ -163,7 +199,7 @@ class like_a_boss {
             this.replaceItemByItem(items, "5c1e495a86f7743109743dfb", "5c94bbff86f7747ee735c08f");
         }
 
-        characters.scav = scavData;
+        characters.scav = existingScavData;
     }
 }
 
