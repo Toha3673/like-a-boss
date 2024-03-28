@@ -39,7 +39,7 @@ class like_a_boss {
     }
     preAkiLoad(container) {
         const staticroutermodservice = container.resolve("StaticRouterModService");
-        staticroutermodservice.registerStaticRouter("LikeABoss_On_Game_Start", [{
+        staticroutermodservice.registerStaticRouter("LikeABoss_Game_Start", [{
             url: "/client/game/start",
             action: (url, info, sessionID, output) => {
                 if (this.CFG.reroll_on_game_start)
@@ -53,9 +53,17 @@ class like_a_boss {
         staticroutermodservice.registerStaticRouter("LikeABoss_Profile_Save", [{
             url: "/raid/profile/save",
             action: (url, info, sessionID, output) => {
-                if (info.isPlayerScav) {
+                if (info.isPlayerScav && info.exit != "survived") {
                     this.regenerateScavProfile(sessionID);
                 }
+                return output;
+            }
+        }],
+        "aki");
+        staticroutermodservice.registerStaticRouter("LikeABoss_Savage_Regenerate", [{
+            url: "/client/game/profile/savage/regenerate",
+            action: (url, info, sessionID, output) => {
+                this.regenerateScavProfile(sessionID);
                 return output;
             }
         }],
@@ -97,6 +105,11 @@ class like_a_boss {
         const fenceInfo = pmcData.TradersInfo["579dc571d53a0658a154fbec"];
 
         if (!fenceInfo)
+        {
+            return 0;
+        }
+
+        if (fenceInfo.standing < 0)
         {
             return 0;
         }

@@ -1,7 +1,7 @@
 {
     "reroll_on_game_start": false,
 
-    "remove_scav_cooldown": false,
+    "remove_scav_cooldown": true,
 
     "boss_chances":[
         1,
@@ -9,7 +9,7 @@
         10,
         15,
         20,
-        35
+        100
     ],
 
     "boss_list": [
@@ -40,5 +40,5 @@
         "5c0e541586f7747fa54205c9"
     ],
 
-    "replace_color_keycards": true
+    "replace_color_keycards": false
 }
