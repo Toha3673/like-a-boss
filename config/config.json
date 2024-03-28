@@ -1,5 +1,7 @@
 {
-    "reroll_on_game_start": true,
+    "reroll_on_game_start": false,
+
+    "remove_scav_cooldown": false,
 
     "boss_chances":[
         1,
