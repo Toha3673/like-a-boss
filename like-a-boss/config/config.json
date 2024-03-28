@@ -1,0 +1,44 @@
+{
+    "reroll_on_game_start": false,
+
+    "remove_scav_cooldown": false,
+
+    "boss_chances":[
+        1,
+        5,
+        10,
+        15,
+        20,
+        35
+    ],
+
+    "boss_list": [
+        "bossbully",
+        "bossgluhar",
+        "bosskilla",
+        "bossknight",
+        "bosskojaniy",
+        "bosssanitar",
+        "bosstagilla",
+        "followerbigpipe",
+        "followerbirdeye",
+        "sectantpriest",
+        "sectantwarrior",
+        "bossboar",
+        "bosszryachiy"
+    ],
+
+    "hide_exotic_items": true,
+
+    "exotic_items_list": [
+        "60a7acf20c5cb24b01346648",
+        "5b3b713c5acfc4330140bd8d",
+        "5e997f0b86f7741ac73993e2",
+        "63626d904aa74b8fe30ab426",
+        "636270263f2495c26f00b007",
+        "5c0e874186f7745dc7616606",
+        "5c0e541586f7747fa54205c9"
+    ],
+
+    "replace_color_keycards": true
+}
