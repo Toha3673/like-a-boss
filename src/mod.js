@@ -53,7 +53,7 @@ class like_a_boss {
         staticroutermodservice.registerStaticRouter("LikeABoss_Profile_Save", [{
             url: "/raid/profile/save",
             action: (url, info, sessionID, output) => {
-                if (info.isPlayerScav && info.exit != "survived") {
+                if (info.isPlayerScav && info.exit != "survived" && info.exit != "runner") {
                     this.regenerateScavProfile(sessionID);
                 }
                 return output;
