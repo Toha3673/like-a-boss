@@ -15,6 +15,7 @@ class like_a_boss {
     HashGen;
     postDBLoad(container) {
         this.CFG = require("../config/config.json");
+        this.Traders = require("C:/snapshot/project/obj/models/enums/Traders");
         this.Logger = container.resolve("WinstonLogger");
         this.DataBase = container.resolve("DatabaseServer");
         this.JsonUtil = container.resolve("JsonUtil");
@@ -102,9 +103,9 @@ class like_a_boss {
 
     getScavKarmaLevel(pmcData)
     {
-        const fenceInfo = pmcData.TradersInfo["579dc571d53a0658a154fbec"];
+        const fenceInfo = pmcData.TradersInfo[this.Traders.Traders.FENCE];//"579dc571d53a0658a154fbec"];
 
-        if (!fenceInfo)
+        if (!fenceInfo || !pmcData)
         {
             return 0;
         }
