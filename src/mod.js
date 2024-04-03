@@ -75,7 +75,7 @@ class like_a_boss {
     {
         const profile = this.SaveServer.getProfile(sessionID);
         const scavKarmaLevel = this.getScavKarmaLevel(profile.characters.pmc);
-        const chance = this.CFG.boss_chances[scavKarmaLevel-1]
+        const chance = this.CFG.boss_chances[scavKarmaLevel]
         const random = this.RandomUtil.getInt(1, 100)
         if (random <= chance) {
             this.Logger.log(`[like-a-boss] Creating boss profile.. [because ${random} < or = ${chance} (${scavKarmaLevel} karma)]`, LTColor.LogTextColor.CYAN);

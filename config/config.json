@@ -9,7 +9,8 @@
         10,
         15,
         20,
-        35
+        30,
+        40
     ],
 
     "boss_list": [
@@ -25,7 +26,8 @@
         "sectantpriest",
         "sectantwarrior",
         "bossboar",
-        "bosszryachiy"
+        "bosszryachiy",
+        "bosskolontay"
     ],
 
     "hide_exotic_items": true,
@@ -37,7 +39,8 @@
         "63626d904aa74b8fe30ab426",
         "636270263f2495c26f00b007",
         "5c0e874186f7745dc7616606",
-        "5c0e541586f7747fa54205c9"
+        "5c0e541586f7747fa54205c9",
+        "6540d2162ae6d96b540afcaf"
     ],
 
     "replace_color_keycards": true
